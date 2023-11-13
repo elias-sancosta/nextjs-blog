@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import { FormData } from '@/types/blog';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const inputClass =
   'w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300';
@@ -15,6 +16,7 @@ const FormNewPost = () => {
     content: '',
   });
   const router = useRouter();
+  const { data } = useSession();
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -65,6 +67,7 @@ const FormNewPost = () => {
       </div>
       <button
         type="submit"
+        disabled={!data?.user?.email}
         className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:ring focus:border-blue-300 w-full disabled:bg-gray-400"
       >
         Submit

@@ -3,6 +3,7 @@
 import { ChangeEvent, FC, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 interface FormCommentProps {
   postId: string;
@@ -11,6 +12,7 @@ interface FormCommentProps {
 const FormComments: FC<FormCommentProps> = ({ postId }) => {
   const [comment, setComment] = useState<string>('');
   const router = useRouter();
+  const { data } = useSession();
 
   const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -50,6 +52,7 @@ const FormComments: FC<FormCommentProps> = ({ postId }) => {
         />
         <button
           onClick={handleSubmitComment}
+          disabled={!data?.user?.email}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md mt-2 disabled:bg-gray-400"
         >
           Submit Comment
